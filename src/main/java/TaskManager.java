@@ -51,8 +51,8 @@ public class TaskManager {
         System.out.println("list");
         String[][] tasks = readFromFile();
         for(int i=0; i<tasks.length; i++){
-            System.out.println(i + " : " + tasks[i][0] + " " +
-                    tasks[i][1] + " " + ConsoleColors.RED +
+            System.out.println(i + " : " + tasks[i][0] + "\t" +
+                    tasks[i][1] + "\t" + ConsoleColors.RED +
                     tasks[i][2] + ConsoleColors.RESET);
         }
 
