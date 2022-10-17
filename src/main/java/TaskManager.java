@@ -1,8 +1,13 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class TaskManager {
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+
         String option = "";
         while(!option.equals("exit")) {
             printMenu();
@@ -43,10 +48,45 @@ public class TaskManager {
     }
 
     public static void list(){
-        System.out.println("Option list executing...");
+        System.out.println("list");
+        String[][] tasks = readFromFile();
+        for(int i=0; i<tasks.length; i++){
+            System.out.println(i + " : " + tasks[i][0] + " " +
+                    tasks[i][1] + " " + ConsoleColors.RED +
+                    tasks[i][2] + ConsoleColors.RESET);
+        }
+
     }
 
     public static void exit(){
         System.out.println("Option exit executing...");
+
     }
+
+    public static String[][] readFromFile(){
+        String[][] uploadedTasks = new String[0][];
+        File file = new File("tasks.csv");
+
+        try(Scanner sc = new Scanner(file)){
+            while (sc.hasNextLine()){
+                String line = sc.nextLine();
+                String[] data = line.split(",");
+                uploadedTasks = addNewRow(uploadedTasks, data);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return uploadedTasks;
+    }
+
+    public static String[][] addNewRow(String[][] multiarray, String[] row){
+        multiarray = Arrays.copyOf(multiarray, multiarray.length + 1);
+        multiarray[multiarray.length-1] = row;
+        return multiarray;
+    }
+
+
+
+
 }
