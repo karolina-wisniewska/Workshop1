@@ -49,15 +49,15 @@ public class TaskManager {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
         return tasks;
     }
+
     public static void printMenu() {
-        System.out.println(ConsoleColors.GREEN_BOLD + "\nPlease select an option:");
-        System.out.println(ConsoleColors.RESET + "add\n" +
+        System.out.println(ConsoleColors.GREEN_BOLD + "\nPlease select an option:" + ConsoleColors.RESET);
+        System.out.println("add\n" +
                 "remove\n" +
                 "list\n" +
-                "exit\n");
+                ConsoleColors.BLUE + "exit\n" + ConsoleColors.RESET);
     }
 
     public static void add(){
@@ -123,8 +123,6 @@ public class TaskManager {
             e.printStackTrace();
         }
     }
-
-
 
     public static String[][] addNewRow(String[][] multiarray, String[] row){
         multiarray = Arrays.copyOf(multiarray, multiarray.length + 1);
