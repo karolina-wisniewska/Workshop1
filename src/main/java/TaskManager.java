@@ -33,7 +33,6 @@ public class TaskManager {
                     break;
             }
         }
-        scanner.close();
     }
 
     public static String[][] readFromFile(){
@@ -60,9 +59,7 @@ public class TaskManager {
                 "exit\n");
     }
 
-
-
-    public static String[][] add(){
+    public static void add(){
         Scanner scanner2 = new Scanner(System.in);
         String[] newTask = new String[3];
         System.out.println("Please add task description");
@@ -75,29 +72,43 @@ public class TaskManager {
             scanner2.nextLine();
         }
         newTask[2] = scanner2.nextLine();
-        scanner2.close();
-        System.out.println(ConsoleColors.RESET);
         tasks = addNewRow(tasks,newTask);
-        return tasks;
     }
 
     public static void remove(){
-
-        System.out.println("Option remove executing...");
+        Scanner scanner3 = new Scanner(System.in);
+        System.out.println("Please select number to remove.");
+        int number = scanner3.nextInt();
+        while(number < 0 || number > tasks.length-1){
+            System.out.println("Invalid value. Please select number between 0 and " + (tasks.length-1));
+            scanner3.nextLine();
+            number = scanner3.nextInt();
+            scanner3.nextLine();
+        }
+        String[][] newTasks = new String[0][];
+        for(int i=0; i < tasks.length; i++) {
+            if(i != number) {
+                newTasks = addNewRow(newTasks,tasks[i]);
+            }
+        }
+        tasks = Arrays.copyOf(newTasks,newTasks.length);
+        System.out.println("Value was successfully deleted.");
     }
 
     public static void list(){
         System.out.println("list");
-        for(int i=0; i < tasks.length; i++){
-            System.out.println(i + " : " + tasks[i][0] + "\t" +
-                    tasks[i][1] + "\t" + ConsoleColors.RED +
-                    tasks[i][2] + ConsoleColors.RESET);
+        if(tasks.length == 0){
+            System.out.println("Your to-do list is empty.");
+        } else {
+            for(int i=0; i < tasks.length; i++){
+                System.out.println(i + " : " + tasks[i][0] + "\t" +
+                        tasks[i][1] + "\t" + ConsoleColors.RED +
+                        tasks[i][2] + ConsoleColors.RESET);
+            }
         }
-
     }
 
     public static void exit(){
-        System.out.println("Option exit executing...");
 
     }
 
@@ -113,3 +124,5 @@ public class TaskManager {
 
 
 }
+
+//dlaczego muszę dodawać zbieranie z buforu w remove
