@@ -1,5 +1,6 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.*;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -68,7 +69,7 @@ public class TaskManager {
         newTask[1] = scanner2.nextLine();
         System.out.println("Is your task important: " + ConsoleColors.RED + "true" + ConsoleColors.RESET + "/" + ConsoleColors.RED + "false");
         while (!scanner2.hasNextBoolean()) {
-            System.out.println(ConsoleColors.RED_BOLD + "Invalid value. Please enter boolean: " + ConsoleColors.RED + "true" + ConsoleColors.RESET + "/" + ConsoleColors.RED + "false" );
+            System.out.println(ConsoleColors.RED_BOLD + "Invalid value. " + ConsoleColors.RESET + "Please enter either " + ConsoleColors.RED + "true" + ConsoleColors.RESET + " or " + ConsoleColors.RED + "false" );
             scanner2.nextLine();
         }
         newTask[2] = scanner2.nextLine();
@@ -80,7 +81,7 @@ public class TaskManager {
         System.out.println("Please select number to remove.");
         int number = scanner3.nextInt();
         while(number < 0 || number > tasks.length-1){
-            System.out.println("Invalid value. Please select number between 0 and " + (tasks.length-1));
+            System.out.println(ConsoleColors.RED_BOLD + "Invalid value. " + ConsoleColors.RESET + "Please select number between 0 and " + (tasks.length-1));
             scanner3.nextLine();
             number = scanner3.nextInt();
             scanner3.nextLine();
@@ -109,7 +110,18 @@ public class TaskManager {
     }
 
     public static void exit(){
-
+        try(FileWriter fileWriter = new FileWriter("tasks.csv")){
+            if(tasks.length==0) {
+                fileWriter.append("");
+            } else {
+                for(int i = 0; i < tasks.length; i++) {
+                    fileWriter.append(StringUtils.join(tasks[i],","));
+                    fileWriter.append("\n");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -119,10 +131,4 @@ public class TaskManager {
         multiarray[multiarray.length-1] = row;
         return multiarray;
     }
-
-
-
-
 }
-
-//dlaczego muszę dodawać zbieranie z buforu w remove
