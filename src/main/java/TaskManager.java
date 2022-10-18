@@ -30,7 +30,7 @@ public class TaskManager {
                     exit();
                     break;
                 default:
-                    System.out.println("Invalid option. Please try again.");
+                    System.out.println(ConsoleColors.RED_BOLD + "Invalid option. " + ConsoleColors.RESET + "Please try again.");
                     break;
             }
         }
@@ -47,7 +47,7 @@ public class TaskManager {
                 tasks = addNewRow(tasks, data);
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());;
         }
         return tasks;
     }
@@ -120,7 +120,7 @@ public class TaskManager {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
