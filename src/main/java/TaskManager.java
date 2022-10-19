@@ -18,10 +18,10 @@ public class TaskManager {
             option = scanner.nextLine();
             switch (option) {
                 case "add":
-                    add();
+                    add(scanner);
                     break;
                 case "remove":
-                    remove();
+                    remove(scanner);
                     break;
                 case "list":
                     list();
@@ -47,7 +47,7 @@ public class TaskManager {
                 tasks = addNewRow(tasks, data);
             }
         } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());;
+            System.out.println(e.getMessage());
         }
         return tasks;
     }
@@ -60,8 +60,7 @@ public class TaskManager {
                 ConsoleColors.BLUE + "exit\n" + ConsoleColors.RESET);
     }
 
-    public static void add(){
-        Scanner scanner2 = new Scanner(System.in);
+    public static void add(Scanner scanner2){
         String[] newTask = new String[3];
         System.out.println("Please add task description");
         newTask[0] = scanner2.nextLine();
@@ -76,8 +75,7 @@ public class TaskManager {
         tasks = addNewRow(tasks,newTask);
     }
 
-    public static void remove(){
-        Scanner scanner3 = new Scanner(System.in);
+    public static void remove(Scanner scanner3){
         System.out.println("Please select number to remove.");
         int number = scanner3.nextInt();
         while(number < 0 || number > tasks.length-1){
@@ -124,9 +122,10 @@ public class TaskManager {
         }
     }
 
-    public static String[][] addNewRow(String[][] multiarray, String[] row){
-        multiarray = Arrays.copyOf(multiarray, multiarray.length + 1);
-        multiarray[multiarray.length-1] = row;
-        return multiarray;
+    public static String[][] addNewRow(String[][] mArray, String[] row){
+        mArray = Arrays.copyOf(mArray, mArray.length + 1);
+        mArray[mArray.length-1] = row;
+        return mArray;
     }
+
 }
