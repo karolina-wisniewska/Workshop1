@@ -14,7 +14,12 @@ public class TaskManager {
         String option = "";
 
         while(!option.equals("exit")) {
-            printMenu();
+            System.out.println(ConsoleColors.GREEN_BOLD + "\nPlease select an option:" + ConsoleColors.RESET);
+            System.out.println("add\n" +
+                    "remove\n" +
+                    "list\n" +
+                    ConsoleColors.BLUE + "exit\n" + ConsoleColors.RESET);
+
             option = scanner.nextLine();
             switch (option) {
                 case "add":
@@ -50,14 +55,6 @@ public class TaskManager {
             System.out.println(e.getMessage());
         }
         return tasks;
-    }
-
-    public static void printMenu() {
-        System.out.println(ConsoleColors.GREEN_BOLD + "\nPlease select an option:" + ConsoleColors.RESET);
-        System.out.println("add\n" +
-                "remove\n" +
-                "list\n" +
-                ConsoleColors.BLUE + "exit\n" + ConsoleColors.RESET);
     }
 
     public static void add(Scanner scanner2){
