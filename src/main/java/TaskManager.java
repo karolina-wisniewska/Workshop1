@@ -78,6 +78,7 @@ public class TaskManager {
     public static void remove(Scanner scanner3){
         System.out.println("Please select number to remove.");
         int number = scanner3.nextInt();
+        scanner3.nextLine();
         while(number < 0 || number > tasks.length-1){
             System.out.println(ConsoleColors.RED_BOLD + "Invalid value. " + ConsoleColors.RESET + "Please select number between 0 and " + (tasks.length-1));
             scanner3.nextLine();
