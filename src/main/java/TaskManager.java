@@ -88,7 +88,7 @@ public class TaskManager {
                 newTasks = addNewRow(newTasks,tasks[i]);
             }
         }
-        tasks = Arrays.copyOf(newTasks,newTasks.length);
+        tasks = newTasks;
         System.out.println("Value was successfully deleted.");
     }
 
