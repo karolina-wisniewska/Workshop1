@@ -1,3 +1,4 @@
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
@@ -7,26 +8,32 @@ import java.util.Scanner;
 public class TaskManager {
 
     static String[][] tasks;
+    private static final String EXIT = "exit";
+    private static final String ADD = "add";
+    private static final String REMOVE = "remove";
+    private static final String LIST = "list";
+    private static final String FILENAME = "tasks.csv";
+
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        tasks = readFromFile();
+        readFromFile();
         String option = "";
 
-        while(!option.equals("exit")) {
+        while(!option.equals(EXIT)) {
             printMenu();
             option = scanner.nextLine();
             switch (option) {
-                case "add":
+                case ADD:
                     add(scanner);
                     break;
-                case "remove":
+                case REMOVE:
                     remove(scanner);
                     break;
-                case "list":
+                case LIST:
                     list();
                     break;
-                case "exit":
+                case EXIT:
                     exit();
                     break;
                 default:
@@ -36,9 +43,9 @@ public class TaskManager {
         }
     }
 
-    public static String[][] readFromFile(){
+    public static void readFromFile(){
         tasks = new String[0][];
-        File file = new File("tasks.csv");
+        File file = new File(FILENAME);
 
         try(Scanner sc = new Scanner(file)){
             while (sc.hasNextLine()){
@@ -49,54 +56,56 @@ public class TaskManager {
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }
-        return tasks;
     }
 
     public static void printMenu(){
-        System.out.println(ConsoleColors.GREEN_BOLD + "\nPlease select an option:" + ConsoleColors.RESET);
-        System.out.println("add\n" +
-                "remove\n" +
-                "list\n" +
-                ConsoleColors.BLUE + "exit\n" + ConsoleColors.RESET);
+        System.out.println(ConsoleColors.GREEN_BOLD + "\nPlease select an option:");
+        System.out.print(ConsoleColors.RESET);
+        System.out.println(ADD);
+        System.out.println(REMOVE);
+        System.out.println(LIST);
+        System.out.print(ConsoleColors.BLUE);
+        System.out.println(EXIT);
+        System.out.println(ConsoleColors.RESET);
     }
 
-    public static void add(Scanner scanner2){
+    public static void add(Scanner scanner){
         String[] newTask = new String[3];
         System.out.println("Please add task description");
-        newTask[0] = scanner2.nextLine();
+        newTask[0] = scanner.nextLine();
         System.out.println("Please add task due date");
-        newTask[1] = scanner2.nextLine();
+        newTask[1] = scanner.nextLine();
         System.out.println("Is your task important: " + ConsoleColors.RED + "true" + ConsoleColors.RESET + "/" + ConsoleColors.RED + "false");
-        while (!scanner2.hasNextBoolean()) {
+        while (!scanner.hasNextBoolean()) {
             System.out.println(ConsoleColors.RED_BOLD + "Invalid value. " + ConsoleColors.RESET + "Please enter either " + ConsoleColors.RED + "true" + ConsoleColors.RESET + " or " + ConsoleColors.RED + "false" );
-            scanner2.nextLine();
+            scanner.nextLine();
         }
-        newTask[2] = scanner2.nextLine();
+        newTask[2] = scanner.nextLine();
         tasks = addNewRow(tasks,newTask);
     }
 
-    public static void remove(Scanner scanner3){
+    public static void remove(Scanner scanner){
         System.out.println("Please select number to remove.");
-        int number = scanner3.nextInt();
-        scanner3.nextLine();
+        int number = getNumberFromUser(scanner);
         while(number < 0 || number > tasks.length-1){
-            System.out.println(ConsoleColors.RED_BOLD + "Invalid value. " + ConsoleColors.RESET + "Please select number between 0 and " + (tasks.length-1));
-            scanner3.nextLine();
-            number = scanner3.nextInt();
-            scanner3.nextLine();
+            System.out.println(ConsoleColors.RED_BOLD + "Number out of bounds: " + number + ConsoleColors.RESET + " Please select number between 0 and " + (tasks.length-1));
+            number = getNumberFromUser(scanner);
         }
-        String[][] newTasks = new String[0][];
-        for(int i=0; i < tasks.length; i++) {
-            if(i != number) {
-                newTasks = addNewRow(newTasks,tasks[i]);
-            }
-        }
-        tasks = newTasks;
+        tasks = ArrayUtils.remove(tasks,number);
         System.out.println("Value was successfully deleted.");
     }
 
+    public static int getNumberFromUser(Scanner scanner){
+        while(!scanner.hasNextInt()){
+            System.out.println(ConsoleColors.RED_BOLD + "Invalid value. " + ConsoleColors.RESET + "Please enter a number.");
+            scanner.nextLine();
+        }
+        int number = scanner.nextInt();
+        scanner.nextLine();
+        return number;
+    }
+
     public static void list(){
-        System.out.println("list");
         if(tasks.length == 0){
             System.out.println("Your to-do list is empty.");
         } else {
@@ -109,14 +118,10 @@ public class TaskManager {
     }
 
     public static void exit(){
-        try(FileWriter fileWriter = new FileWriter("tasks.csv")){
-            if(tasks.length==0) {
-                fileWriter.append("");
-            } else {
-                for(int i = 0; i < tasks.length; i++) {
-                    fileWriter.append(StringUtils.join(tasks[i],","));
-                    fileWriter.append("\n");
-                }
+        try(FileWriter fileWriter = new FileWriter(FILENAME)){
+            for(int i = 0; i < tasks.length; i++) {
+                fileWriter.append(StringUtils.join(tasks[i],","));
+                fileWriter.append("\n");
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
