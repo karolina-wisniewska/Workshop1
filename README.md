@@ -10,8 +10,5 @@ The app enables managing tasks, i.e.:
 ## Technologies
 Java
 
-## Setup
-??? Clone this repo to your desktop and run npm install to install all the dependencies.
-
 ## License
 MIT
